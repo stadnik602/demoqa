@@ -1,6 +1,9 @@
 from selene import browser, have, command
 
-from demoqa.pages.registration_page import RegistrationPage
+from demoqa.pages.registration_page import (
+    RegistrationPage,
+    confirmation_popup_title_element,
+)
 
 """    def registered_user_data(self):
         browser.all('.table').all('td').should(
@@ -16,53 +19,6 @@ from demoqa.pages.registration_page import RegistrationPage
                 ('Address', '202-2 Dunsheath Way'),
                 ('State and City', 'NCR Noida'),
             ))"""
-
-
-FORM_PAGE_URL = "/automation-practice-form"
-# GIVEN
-first_name_field = browser.element("#firstName")
-last_name_field = browser.element("#lastName")
-email_field = browser.element("#userEmail")
-mobile_field = browser.element("#userNumber")
-date_of_birth_field = browser.element("#dateOfBirthInput")
-
-subject_input = browser.element("#subjectsInput")
-current_address_input = browser.element("#currentAddress")
-choose_picture_button = browser.element("#uploadPicture")
-state_input = browser.element("#react-select-3-input")
-city_input = browser.element("#react-select-4-input")
-state_dropdown_elements = browser.all('[id ^= "react-select"][id *= "option"]')
-city_dropdown_elements = browser.all('[id ^= "react-select"][id *= "option"]')
-
-submit_button = browser.element("#submit")
-
-gender_radiobuttons = {
-    "Male": browser.element('[for = "gender-radio-1"]'),
-    "Female": browser.element('[for = "gender-radio-2"]'),
-    "Other": browser.element('[for = "gender-radio-3"]'),
-}
-gender_radiobuttons_2 = {
-    "Male": browser.all('[for ^= "gender-radio"]').element_by(have.text("Male")),
-    "Female": browser.all('[for ^= "gender-radio"]').element_by(have.text("Female")),
-    "Other": browser.all('[for ^= "gender-radio"]').element_by(have.text("Other")),
-}
-datepicker = {
-    "month_dropdown": browser.element(".react-datepicker__month-select"),
-    "year_dropdown": browser.element(".react-datepicker__year-select"),
-    "days": browser.element(".react-datepicker__month"),
-}
-
-hobbies_checkboxes = {
-    "Sports": browser.all('[for ^= "hobbies-checkbox"]').element_by(
-        have.text("Sports")
-    ),
-    "Reading": browser.all('[for ^= "hobbies-checkbox"]').element_by(
-        have.text("Reading")
-    ),
-    "Music": browser.all('[for ^= "hobbies-checkbox"]').element_by(have.text("Music")),
-}
-
-confirmation_popup_title_element = "#example-modal-sizes-title-lg"
 
 
 def test_successes_submit_form():
@@ -87,20 +43,7 @@ def test_successes_submit_form():
     browser.element("#submit").perform(command.js.click)
 
     # THEN
-    """registration_page.should_registered_user_with(
-        'Kurva',
-        'Bobr',
-        'kurvabobr@gmail.com',
-        'Male',
-        '1234567890',
-        '19 April,2022',
-        'Computer Science',
-        'Music',
-        'robert.webp',
-        '202-2 Dunsheath Way',
-        'NCR',
-        'Noida'
-            )"""
+    registration_page.should_confirmation_popup_title("Thanks for submitting the form")
     registration_page.registered_user_data.should(
         have.exact_texts(
             ("Student Name", "Kurva Bobr"),
@@ -116,22 +59,19 @@ def test_successes_submit_form():
         )
     )
 
-    browser.element(confirmation_popup_title_element).should(
-        have.exact_text("Thanks for submitting the form")
-    )
-    """browser.element('.table').all('td').even.should(
-        have.texts(
-            'Kurva Bobr',
-            'kurvabobr@gmail.com',
-            'Male',
-            '1234567890',
-            '19 April,2022',
-            'Computer Science',
-            'Music',
-            'robert.webp',
-            '202-2 Dunsheath Way',
-            'NCR Noida',
-        ))"""
+
+"""    registration_page.should_registered_user_with(
+        "Kurva Bobr",
+        "kurvabobr@gmail.com",
+        "Male",
+        "1234567890",
+        "19 April,2022",
+        "Computer Science",
+        "Music",
+        "robert.webp",
+        "202-2 Dunsheath Way",
+        "NCR Noida",
+    )"""
 
 
 """    browser.all('.table td:nth-child(2)').should(

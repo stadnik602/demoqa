@@ -1,22 +1,52 @@
-from selene import browser
+from selene import browser, have
 
 from demoqa import resource
-from tests.practice_form_test import (
-    FORM_PAGE_URL,
-    first_name_field,
-    last_name_field,
-    date_of_birth_field,
-    datepicker,
-    email_field,
-    gender_radiobuttons,
-    mobile_field,
-    subject_input,
-    hobbies_checkboxes,
-    choose_picture_button,
-    current_address_input,
-    state_input,
-    city_input,
-)
+
+FORM_PAGE_URL = "/automation-practice-form"
+# GIVEN
+first_name_field = browser.element("#firstName")
+last_name_field = browser.element("#lastName")
+email_field = browser.element("#userEmail")
+mobile_field = browser.element("#userNumber")
+date_of_birth_field = browser.element("#dateOfBirthInput")
+
+subject_input = browser.element("#subjectsInput")
+current_address_input = browser.element("#currentAddress")
+choose_picture_button = browser.element("#uploadPicture")
+state_input = browser.element("#react-select-3-input")
+city_input = browser.element("#react-select-4-input")
+state_dropdown_elements = browser.all('[id ^= "react-select"][id *= "option"]')
+city_dropdown_elements = browser.all('[id ^= "react-select"][id *= "option"]')
+
+submit_button = browser.element("#submit")
+
+gender_radiobuttons = {
+    "Male": browser.element('[for = "gender-radio-1"]'),
+    "Female": browser.element('[for = "gender-radio-2"]'),
+    "Other": browser.element('[for = "gender-radio-3"]'),
+}
+gender_radiobuttons_2 = {
+    "Male": browser.all('[for ^= "gender-radio"]').element_by(have.text("Male")),
+    "Female": browser.all('[for ^= "gender-radio"]').element_by(have.text("Female")),
+    "Other": browser.all('[for ^= "gender-radio"]').element_by(have.text("Other")),
+}
+datepicker = {
+    "month_dropdown": browser.element(".react-datepicker__month-select"),
+    "year_dropdown": browser.element(".react-datepicker__year-select"),
+    "days": browser.element(".react-datepicker__month"),
+}
+
+hobbies_checkboxes = {
+    "Sports": browser.all('[for ^= "hobbies-checkbox"]').element_by(
+        have.text("Sports")
+    ),
+    "Reading": browser.all('[for ^= "hobbies-checkbox"]').element_by(
+        have.text("Reading")
+    ),
+    "Music": browser.all('[for ^= "hobbies-checkbox"]').element_by(have.text("Music")),
+}
+
+confirmation_popup_title_element = browser.element("#example-modal-sizes-title-lg")
 
 
 class RegistrationPage:
@@ -78,3 +108,34 @@ class RegistrationPage:
     def fill_state_and_city(self, state, city):
         state_input.type(f"{state}").press_enter()
         city_input.type(f"{city}").press_enter()
+
+    def should_registered_user_with(
+        self,
+        full_name,
+        email,
+        gender,
+        mobile,
+        date_of_birth,
+        subjects,
+        hobbies,
+        picture,
+        address,
+        state_and_city,
+    ):
+        browser.element(".table").all("td").even.should(
+            have.texts(
+                full_name,
+                email,
+                gender,
+                mobile,
+                date_of_birth,
+                subjects,
+                hobbies,
+                picture,
+                address,
+                state_and_city,
+            )
+        )
+
+    def should_confirmation_popup_title(self, title):
+        confirmation_popup_title_element.should(have.exact_text(title))
