@@ -54,7 +54,7 @@ class RegistrationPage:
         self.registered_user_data = browser.all(".table").all("td")
 
     def open(self):
-        browser.open(FORM_PAGE_URL)
+        browser.open_category(FORM_PAGE_URL)
 
     def fill_first_name(self, value):
         first_name_field.type(f"{value}")

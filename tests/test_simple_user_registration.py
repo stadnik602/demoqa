@@ -1,12 +1,12 @@
 from selene import browser
 
 from demoqa.data import users
-from demoqa.steps.simple_user_registration_steps import SimpleUserRegistrationSteps
+from demoqa.pages.application import app
 
 
 def test_registers_user():
-    registration_page = SimpleUserRegistrationSteps()
-
     user = users.simple_user
-
-    (registration_page.open().register(user).should_have_data(user))
+    # app.simple_registration_steps.open().register(user).should_have_data(user)
+    app.open().open_sidebar().open_simple_registration_page().register(
+        user
+    ).should_have_data(user)
