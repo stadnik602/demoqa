@@ -1,5 +1,7 @@
 from selene import browser, have
 
+from demoqa.data.users import TestUser
+
 
 class SimpleUserRegistrationPage:
     def __init__(self):
@@ -10,15 +12,17 @@ class SimpleUserRegistrationPage:
 
     def open(self):
         browser.open("https://demoqa.com/text-box")
+        return self
 
-    def fill_full_name(self, value):
-        self.full_name.type(value)
-
-    def fill_email(self, value):
-        self.email.type(value)
+    def fill_form(self, user: TestUser):
+        self.full_name.type(user.full_name)
+        self.email.type(user.email)
+        self.current_address.type(user.current_address)
+        return self
 
     def submit(self):
         self.submit_button.click()
+        return self
 
-    def should_have_submitted(self, full_name, email):
-        browser.all("#output p").should(have.texts(full_name, email))
+    def should_have_submitted(self, full_name, email, current_address):
+        browser.all("#output p").should(have.texts(full_name, email, current_address))
