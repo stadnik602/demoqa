@@ -1,4 +1,4 @@
-from selene import browser, have
+from selene import browser, have, command
 
 from demoqa import resource
 
@@ -54,19 +54,23 @@ class RegistrationPage:
         self.registered_user_data = browser.all(".table").all("td")
 
     def open(self):
-        browser.open_category(FORM_PAGE_URL)
+        browser.open(FORM_PAGE_URL)
+        return self
 
     def fill_first_name(self, value):
         first_name_field.type(f"{value}")
+        return self
 
     def fill_last_name(self, last_name):
         last_name_field.type(f"{last_name}")
+        return self
 
     def fill_date_of_birth(self, year, month, day):
         date_of_birth_field.click()
         datepicker.get("year_dropdown").send_keys(year)
         datepicker.get("month_dropdown").send_keys(month)
         browser.element(f".react-datepicker__day--0{day}").click()
+        return self
 
     """    def should_registered_user_with(self, first_name, last_name, email, gender, mobile_number, date_of_birth, subjects, hobbies, picture,
                                     current_address, state, city):
@@ -86,28 +90,39 @@ class RegistrationPage:
 
     def fill_email(self, email):
         email_field.type(f"{email}")
+        return self
 
     def click_gender_radiobutton(self, gender):
         gender_radiobuttons.get(f"{gender}").click()
+        return self
 
     def fill_mobile(self, mobile):
         mobile_field.type(f"{mobile}")
+        return self
 
     def select_subject(self, subject):
         subject_input.send_keys(f"{subject}").press_enter()
+        return self
 
     def select_hobbies(self, hobbies):
         hobbies_checkboxes.get(f"{hobbies}").click()
+        return self
 
     def chose_picture(self, picture_name):
         choose_picture_button.set_value(resource.path(f"{picture_name}"))
+        return self
 
     def fill_current_address(self, current_address):
         current_address_input.type(f"{current_address}")
+        return self
 
     def fill_state_and_city(self, state, city):
         state_input.type(f"{state}").press_enter()
         city_input.type(f"{city}").press_enter()
+        return self
+
+    def click_submit_button(self):
+        browser.element("#submit").perform(command.js.click)
 
     def should_registered_user_with(
         self,

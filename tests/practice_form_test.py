@@ -4,6 +4,7 @@ from demoqa.pages.registration_page import (
     RegistrationPage,
     confirmation_popup_title_element,
 )
+from demoqa.steps.user_registration_steps import UserRegistrationSteps
 
 """    def registered_user_data(self):
         browser.all('.table').all('td').should(
@@ -59,6 +60,26 @@ def test_successes_submit_form():
         )
     )
 
+def test_successes_submit_form_by_page_object_steps():
+    page = UserRegistrationSteps()
+
+    (page
+     .open()
+     .register()
+     .should_confirmation_popup_title("Thanks for submitting the form")
+     .should_be_displayed_user_registered_data(
+        ("Student Name", "Kurva Bobr"),
+        ("Student Email", "kurvabobr@gmail.com"),
+        ("Gender", "Male"),
+        ("Mobile", "1234567890"),
+        ("Date of Birth", "19 April,2022"),
+        ("Subjects", "Computer Science"),
+        ("Hobbies", "Music"),
+        ("Picture", "robert.webp"),
+        ("Address", "202-2 Dunsheath Way"),
+        ("State and City", "NCR Noida"),
+        )
+    )
 
 """    registration_page.should_registered_user_with(
         "Kurva Bobr",

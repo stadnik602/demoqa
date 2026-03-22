@@ -13,3 +13,10 @@ simple_user = User(
     email="bkurva@gmail.com",
     current_address="Dunsheath Way 777, MArkham, ON",
 )
+
+@dataclass
+class UserPractiseForm:
+    first_name: str
+    last_name: str
+    email: str
+    current_address: str
