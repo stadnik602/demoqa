@@ -1,6 +1,9 @@
+import calendar
+
 from selene import browser, have
 
-from demoqa.pages.registration_page import RegistrationPage
+from demoqa.data.users import UserPractiseForm
+from demoqa.pages.registration_page import RegistrationPage, Hobbies
 
 confirmation_popup_title_element = browser.element("#example-modal-sizes-title-lg")
 
@@ -12,51 +15,41 @@ class UserRegistrationSteps:
         self.page.open()
         return self
 
-    def register(self):
+    def register(self, user: UserPractiseForm):
         (
         self.page
-         .fill_first_name("Kurva")
-         .fill_last_name("Bobr")
-         .fill_email("kurvabobr@gmail.com")
-         .click_gender_radiobutton('Male')
-         .fill_mobile("1234567890")
-         .fill_date_of_birth("2022", "April", "19")
-         .select_subject("Com")
-         .select_hobbies("Music")
-         .chose_picture("robert.webp")
-         .fill_current_address("202-2 Dunsheath Way")
-         .fill_state_and_city("NCR", "Noida")
+         .fill_first_name(user.first_name)
+         .fill_last_name(user.last_name)
+         .fill_email(user.email)
+         .click_gender_radiobutton(user.gender)
+         .fill_mobile(user.mobile)
+         .fill_date_of_birth(user.date_of_birth)
+         .select_subject(user.subjects)
+         .select_hobby(Hobbies.MUSIC)
+         .chose_picture(user.picture)
+         .fill_current_address(user.address)
+         .fill_state_and_city(user.state, user.city)
          .click_submit_button()
          )
         return self
 
-    def should_be_displayed_user_registered_data(
-            self,
-            full_name,
-            email,
-            gender,
-            mobile,
-            date_of_birth,
-            subjects,
-            hobbies,
-            picture,
-            address,
-            state_and_city,
-    ):
-        browser.element(".table").all("td").should(
-            have.texts(
-                full_name,
-                email,
-                gender,
-                mobile,
-                date_of_birth,
-                subjects,
-                hobbies,
-                picture,
-                address,
-                state_and_city,
-            )
-        )
+    def should_be_displayed_user_registered_data(self, user: UserPractiseForm):
+        # формируем список всех ячеек таблицы (заголовки + значения)
+        expected_values = [
+            "Student Name", f"{user.first_name} {user.last_name}",
+            "Student Email", user.email,
+            "Gender", user.gender,
+            "Mobile", user.mobile,
+            "Date of Birth", f"{user.date_of_birth.day} {calendar.month_name[user.date_of_birth.month]},{user.date_of_birth.year}",
+            "Subjects", ", ".join(user.subjects),
+            "Hobbies", ", ".join([h.value for h in user.hobbies]),
+            "Picture", user.picture,
+            "Address", user.address,
+            "State and City", f"{user.state} {user.city}",
+        ]
+
+        # проверяем все td подряд
+        browser.element(".table").all("td").should(have.texts(*expected_values))
         return self
 
     def should_confirmation_popup_title(self, title):

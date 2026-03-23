@@ -1,6 +1,15 @@
+import calendar
+from enum import Enum
+from typing import List
+
 from selene import browser, have, command
 
 from demoqa import resource
+
+class Hobbies(Enum):
+    SPORTS = "Sports"
+    READING = "Reading"
+    MUSIC = "Music"
 
 FORM_PAGE_URL = "/automation-practice-form"
 # GIVEN
@@ -36,18 +45,9 @@ datepicker = {
     "days": browser.element(".react-datepicker__month"),
 }
 
-hobbies_checkboxes = {
-    "Sports": browser.all('[for ^= "hobbies-checkbox"]').element_by(
-        have.text("Sports")
-    ),
-    "Reading": browser.all('[for ^= "hobbies-checkbox"]').element_by(
-        have.text("Reading")
-    ),
-    "Music": browser.all('[for ^= "hobbies-checkbox"]').element_by(have.text("Music")),
-}
+hobbies_locator = browser.all('[for ^= "hobbies-checkbox"]')
 
 confirmation_popup_title_element = browser.element("#example-modal-sizes-title-lg")
-
 
 class RegistrationPage:
     def __init__(self):
@@ -65,10 +65,13 @@ class RegistrationPage:
         last_name_field.type(f"{last_name}")
         return self
 
-    def fill_date_of_birth(self, year, month, day):
+    def fill_date_of_birth(self, date_of_birth):
         date_of_birth_field.click()
-        datepicker.get("year_dropdown").send_keys(year)
-        datepicker.get("month_dropdown").send_keys(month)
+        month_name = calendar.month_name[date_of_birth.month]
+
+        datepicker.get("year_dropdown").send_keys(str(date_of_birth.year))
+        datepicker.get("month_dropdown").send_keys(month_name)
+        day = f"{date_of_birth.day:02}"
         browser.element(f".react-datepicker__day--0{day}").click()
         return self
 
@@ -100,12 +103,15 @@ class RegistrationPage:
         mobile_field.type(f"{mobile}")
         return self
 
-    def select_subject(self, subject):
-        subject_input.send_keys(f"{subject}").press_enter()
+    def select_subject(self, subject: List[str]):
+        for i in subject:
+            subject_input.send_keys(f"{i}").press_enter()
         return self
 
-    def select_hobbies(self, hobbies):
-        hobbies_checkboxes.get(f"{hobbies}").click()
+    def select_hobby(self, hobby: Hobbies):
+        hobbies_locator \
+            .element_by(have.text(hobby.value)) \
+            .click()
         return self
 
     def chose_picture(self, picture_name):
