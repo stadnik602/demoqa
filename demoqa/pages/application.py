@@ -6,7 +6,7 @@ from demoqa.steps.simple_user_registration_steps import (
     SimpleUserRegistrationPage,
     SimpleUserRegistrationSteps,
 )
-from demoqa.steps.user_registration_steps import UserRegistrationSteps
+from demoqa.steps.registration_steps import UserRegistrationSteps
 
 
 class Application:
