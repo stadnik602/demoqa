@@ -7,10 +7,17 @@ from selene import browser, have, command
 from demoqa import resource
 
 
-class Hobbies(Enum):
+class Hobby(Enum):
     SPORTS = "Sports"
     READING = "Reading"
     MUSIC = "Music"
+
+
+class Subject(Enum):
+    COMPUTER_SCIENCE = "Computer Science"
+    ENGLISH = "English"
+    ARTS = "Arts"
+    ECONOMICS = "Economics"
 
 
 class RegistrationPage:
@@ -82,22 +89,6 @@ class RegistrationPage:
         browser.element(f".react-datepicker__day--0{day}").click()
         return self
 
-    """    def should_registered_user_with(self, first_name, last_name, email, gender, mobile_number, date_of_birth, subjects, hobbies, picture,
-                                    current_address, state, city):
-        browser.all('.table').all('td').should(
-            have.texts(
-                ('Student Name', f'{first_name} {last_name}'),
-                ('Student Email', f'{email}'),
-                ('Gender', f'{gender}'),
-                ('Mobile', f'{mobile_number}'),
-                ('Date of Birth', f'{date_of_birth}'),
-                ('Subjects', f'{subjects}'),
-                ('Hobbies', f'{hobbies}'),
-                ('Picture', f'{picture}'),
-                ('Address', f'{current_address}'),
-                ('State and City', f'{state} {city}'),
-        )) """
-
     def fill_email(self, email):
         self.email_field.type(f"{email}")
         return self
@@ -110,13 +101,14 @@ class RegistrationPage:
         self.mobile_field.type(f"{mobile}")
         return self
 
-    def select_subject(self, subject: List[str]):
+    def select_subject(self, subject: List[Subject]):
         for i in subject:
-            self.subject_input.send_keys(f"{i}").press_enter()
+            self.subject_input.send_keys(f"{i.value}").press_enter()
         return self
 
-    def select_hobby(self, hobby: Hobbies):
-        self.hobbies_locator.element_by(have.text(hobby.value)).click()
+    def select_hobby(self, hobby: List[Hobby]):
+        for i in hobby:
+            self.hobbies_locator.element_by(have.text(i.value)).click()
         return self
 
     def chose_picture(self, picture_name):

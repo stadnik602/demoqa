@@ -3,7 +3,7 @@ import calendar
 from selene import browser, have
 
 from demoqa.data.users import UserPractiseForm
-from demoqa.pages.registration_page import RegistrationPage, Hobbies
+from demoqa.pages.registration_page import RegistrationPage, Hobby
 
 
 class UserRegistrationSteps:
@@ -27,7 +27,7 @@ class UserRegistrationSteps:
             .fill_mobile(user.mobile)
             .fill_date_of_birth(user.date_of_birth)
             .select_subject(user.subjects)
-            .select_hobby(Hobbies.MUSIC)
+            .select_hobby(user.hobbies)
             .chose_picture(user.picture)
             .fill_current_address(user.address)
             .fill_state_and_city(user.state, user.city)
@@ -48,7 +48,7 @@ class UserRegistrationSteps:
             "Date of Birth",
             f"{user.date_of_birth.day} {calendar.month_name[user.date_of_birth.month]},{user.date_of_birth.year}",
             "Subjects",
-            ", ".join(user.subjects),
+            ", ".join(s.value for s in user.subjects),
             "Hobbies",
             ", ".join([h.value for h in user.hobbies]),
             "Picture",

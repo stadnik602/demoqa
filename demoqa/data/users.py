@@ -3,7 +3,7 @@ from typing import List
 from datetime import date
 
 
-from demoqa.pages.registration_page import Hobbies
+from demoqa.pages.registration_page import Hobby, Subject
 
 
 @dataclass
@@ -19,6 +19,7 @@ simple_user = User(
     current_address="Dunsheath Way 777, MArkham, ON",
 )
 
+
 @dataclass
 class UserPractiseForm:
     first_name: str
@@ -30,8 +31,8 @@ class UserPractiseForm:
 
     date_of_birth: date
 
-    subjects: List[str] = field(default_factory=list)
-    hobbies: List[Hobbies] = field(default_factory=list)
+    subjects: List[Subject] = field(default_factory=list)
+    hobbies: List[Hobby] = field(default_factory=list)
 
     picture: str = ""
     address: str = ""
@@ -50,10 +51,10 @@ user = UserPractiseForm(
     # month="April",
     # year="2022",
     date_of_birth=date(2022, 4, 19),
-    subjects=["Computer Science", 'English'],
-    hobbies=[Hobbies.MUSIC],
+    subjects=[Subject.COMPUTER_SCIENCE, Subject.ENGLISH],
+    hobbies=[Hobby.MUSIC, Hobby.READING],
     picture="robert.webp",
     address="202-2 Dunsheath Way",
     state="NCR",
-    city="Noida"
+    city="Noida",
 )
