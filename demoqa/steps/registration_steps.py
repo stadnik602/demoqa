@@ -1,5 +1,3 @@
-import calendar
-
 from selene import browser, have
 
 from demoqa.data.users import UserPractiseForm
@@ -42,11 +40,11 @@ class UserRegistrationSteps:
             "Student Email",
             user.email,
             "Gender",
-            user.gender,
+            user.gender.value,
             "Mobile",
             user.mobile,
             "Date of Birth",
-            f"{user.date_of_birth.day} {calendar.month_name[user.date_of_birth.month]},{user.date_of_birth.year}",
+            f"{user.date_of_birth.strftime('%d %B,%Y')}",
             "Subjects",
             ", ".join(s.value for s in user.subjects),
             "Hobbies",

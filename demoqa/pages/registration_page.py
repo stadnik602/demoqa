@@ -1,4 +1,3 @@
-import calendar
 from enum import Enum
 from typing import List
 
@@ -18,6 +17,12 @@ class Subject(Enum):
     ENGLISH = "English"
     ARTS = "Arts"
     ECONOMICS = "Economics"
+
+
+class Gender(Enum):
+    MALE = "Male"
+    FEMALE = "Female"
+    OTHER = "Other"
 
 
 class RegistrationPage:
@@ -40,12 +45,8 @@ class RegistrationPage:
             '[id ^= "react-select"][id *= "option"]'
         )
         self.submit_button = browser.element("#submit")
+
         self.gender_radiobuttons = {
-            "Male": browser.element('[for = "gender-radio-1"]'),
-            "Female": browser.element('[for = "gender-radio-2"]'),
-            "Other": browser.element('[for = "gender-radio-3"]'),
-        }
-        self.gender_radiobuttons_2 = {
             "Male": browser.all('[for ^= "gender-radio"]').element_by(
                 have.text("Male")
             ),
@@ -81,10 +82,9 @@ class RegistrationPage:
 
     def fill_date_of_birth(self, date_of_birth):
         self.date_of_birth_field.click()
-        month_name = calendar.month_name[date_of_birth.month]
 
-        self.datepicker.get("year_dropdown").send_keys(str(date_of_birth.year))
-        self.datepicker.get("month_dropdown").send_keys(month_name)
+        self.datepicker.get("year_dropdown").send_keys(date_of_birth.strftime("%Y"))
+        self.datepicker.get("month_dropdown").send_keys(date_of_birth.strftime("%B"))
         day = f"{date_of_birth.day:02}"
         browser.element(f".react-datepicker__day--0{day}").click()
         return self
@@ -93,8 +93,8 @@ class RegistrationPage:
         self.email_field.type(f"{email}")
         return self
 
-    def click_gender_radiobutton(self, gender):
-        self.gender_radiobuttons.get(f"{gender}").click()
+    def click_gender_radiobutton(self, gender: Gender):
+        self.gender_radiobuttons.get(gender.value).click()
         return self
 
     def fill_mobile(self, mobile):

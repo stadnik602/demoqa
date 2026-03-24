@@ -3,7 +3,7 @@ from typing import List
 from datetime import date
 
 
-from demoqa.pages.registration_page import Hobby, Subject
+from demoqa.pages.registration_page import Hobby, Subject, Gender
 
 
 @dataclass
@@ -27,7 +27,7 @@ class UserPractiseForm:
     email: str
     mobile: str
 
-    gender: str  # "Male" | "Female" | "Other"
+    gender: Gender
 
     date_of_birth: date
 
@@ -46,10 +46,7 @@ user = UserPractiseForm(
     last_name="Bobr",
     email="kurvabobr@gmail.com",
     mobile="1234567890",
-    gender="Male",
-    # day="19",
-    # month="April",
-    # year="2022",
+    gender=Gender.MALE,
     date_of_birth=date(2022, 4, 19),
     subjects=[Subject.COMPUTER_SCIENCE, Subject.ENGLISH],
     hobbies=[Hobby.MUSIC, Hobby.READING],
