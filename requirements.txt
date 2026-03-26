@@ -1,4 +1,4 @@
-pytest
-selene>=2.0.0rc9
-allure-pytest
-selenium>=4.39.0
+pytest==8.2.0
+selene==2.0.0rc9
+selenium==4.21.0
+allure-pytest==2.13.5
