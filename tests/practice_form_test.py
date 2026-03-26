@@ -1,6 +1,14 @@
+import allure
+
 from demoqa.data import users
 
 
+@allure.tag("web")
+@allure.severity(allure.severity_level.BLOCKER)
+@allure.step("Register user with user's data")
+@allure.label("owner", "k.stadnyk")
+@allure.feature("Registration")
+@allure.story("The user can be registered by filling the registration form")
 def test_successes_submit_form_by_page_object_steps(app):
     user = users.user
     (

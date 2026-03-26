@@ -1,3 +1,4 @@
+import allure
 from selene import browser
 
 from demoqa.components.sidebar import Sidebar
@@ -17,10 +18,12 @@ class Application:
         self.user_registration_steps = UserRegistrationSteps()
         self.sidebar = Sidebar()
 
+    @allure.step("Open the home page")
     def open(self):
         browser.open("/")
         return self
 
+    @allure.step("Open the sidebar")
     def open_sidebar(self):
         browser.all(".category-cards a")[1].click()
         return Sidebar()

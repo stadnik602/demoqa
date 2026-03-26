@@ -18,7 +18,7 @@ class UserRegistrationSteps:
         self.page.open()
         return self
 
-    @allure.step("Register user")
+    @allure.step("Register an user")
     def register(self, user: UserPractiseForm):
         (
             self.page.fill_first_name(user.first_name)
@@ -60,7 +60,6 @@ class UserRegistrationSteps:
             "State and City",
             f"{user.state} {user.city}",
         ]
-
         self.registered_user_data_table.should(have.texts(*expected_values))
         return self
 
