@@ -24,6 +24,3 @@ class Application:
     def open_sidebar(self):
         browser.all(".category-cards a")[1].click()
         return Sidebar()
-
-
-app = Application()

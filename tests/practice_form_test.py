@@ -1,8 +1,7 @@
-from demoqa.pages.application import app
 from demoqa.data import users
 
 
-def test_successes_submit_form_by_page_object_steps():
+def test_successes_submit_form_by_page_object_steps(app):
     user = users.user
     (
         app.user_registration_steps.open()

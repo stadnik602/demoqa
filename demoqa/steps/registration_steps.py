@@ -1,3 +1,4 @@
+import allure
 from selene import browser, have
 
 from demoqa.data.users import UserPractiseForm
@@ -12,10 +13,12 @@ class UserRegistrationSteps:
             "#example-modal-sizes-title-lg"
         )
 
+    @allure.step("Opening registration form")
     def open(self):
         self.page.open()
         return self
 
+    @allure.step("Register user")
     def register(self, user: UserPractiseForm):
         (
             self.page.fill_first_name(user.first_name)
@@ -33,6 +36,7 @@ class UserRegistrationSteps:
         )
         return self
 
+    @allure.step("Verifying user data in the table")
     def should_have_registered_user_data(self, user: UserPractiseForm):
         expected_values = [
             "Student Name",
@@ -60,6 +64,7 @@ class UserRegistrationSteps:
         self.registered_user_data_table.should(have.texts(*expected_values))
         return self
 
+    @allure.step("Verify title of the user data popup")
     def should_confirmation_popup_title(self, title):
         self.confirmation_popup_title_element.should(have.exact_text(title))
         return self

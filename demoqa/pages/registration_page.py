@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import List
 
+import allure
 from selene import browser, have, command
 
 from demoqa import resource
@@ -73,59 +74,73 @@ class RegistrationPage:
         return self
 
     def fill_first_name(self, value):
-        self.first_name_field.type(f"{value}")
-        return self
+        with allure.step("Filling first name"):
+            self.first_name_field.type(f"{value}")
+            return self
 
     def fill_last_name(self, last_name):
-        self.last_name_field.type(f"{last_name}")
-        return self
+        with allure.step("Filling last name"):
+            self.last_name_field.type(f"{last_name}")
+            return self
 
     def fill_date_of_birth(self, date_of_birth):
-        self.date_of_birth_field.click()
+        with allure.step("Filling date of birth"):
+            self.date_of_birth_field.click()
 
-        self.datepicker.get("year_dropdown").send_keys(date_of_birth.strftime("%Y"))
-        self.datepicker.get("month_dropdown").send_keys(date_of_birth.strftime("%B"))
-        day = f"{date_of_birth.day:02}"
-        browser.element(f".react-datepicker__day--0{day}").click()
+            self.datepicker.get("year_dropdown").send_keys(date_of_birth.strftime("%Y"))
+            self.datepicker.get("month_dropdown").send_keys(
+                date_of_birth.strftime("%B")
+            )
+            day = f"{date_of_birth.day:02}"
+            browser.element(f".react-datepicker__day--0{day}").click()
         return self
 
     def fill_email(self, email):
-        self.email_field.type(f"{email}")
+        with allure.step("Filling email"):
+            self.email_field.type(f"{email}")
         return self
 
     def click_gender_radiobutton(self, gender: Gender):
-        self.gender_radiobuttons.get(gender.value).click()
+        with allure.step(f"Selecting gender {gender.value}"):
+            self.gender_radiobuttons.get(gender.value).click()
         return self
 
     def fill_mobile(self, mobile):
-        self.mobile_field.type(f"{mobile}")
+        with allure.step("Filling mobile number"):
+            self.mobile_field.type(f"{mobile}")
         return self
 
     def select_subject(self, subject: List[Subject]):
-        for i in subject:
-            self.subject_input.send_keys(f"{i.value}").press_enter()
+        with allure.step(f"Selecting subject"):
+            for i in subject:
+                self.subject_input.send_keys(f"{i.value}").press_enter()
         return self
 
     def select_hobby(self, hobby: List[Hobby]):
-        for i in hobby:
-            self.hobbies_locator.element_by(have.text(i.value)).click()
+        with allure.step(f"Selecting hobby"):
+            for i in hobby:
+                self.hobbies_locator.element_by(have.text(i.value)).click()
         return self
 
     def chose_picture(self, picture_name):
-        self.choose_picture_button.set_value(resource.path(f"{picture_name}"))
+        with allure.step(f"Selecting picture: {picture_name}"):
+            self.choose_picture_button.set_value(resource.path(f"{picture_name}"))
         return self
 
     def fill_current_address(self, current_address):
-        self.current_address_input.type(f"{current_address}")
+        with allure.step(f"Filling current address"):
+            self.current_address_input.type(f"{current_address}")
         return self
 
     def fill_state_and_city(self, state, city):
-        self.state_input.type(f"{state}").press_enter()
-        self.city_input.type(f"{city}").press_enter()
+        with allure.step(f"Selecting state and city"):
+            self.state_input.type(f"{state}").press_enter()
+            self.city_input.type(f"{city}").press_enter()
         return self
 
     def click_submit_button(self):
-        browser.element("#submit").perform(command.js.click)
+        with allure.step(f"Clicking submit button"):
+            browser.element("#submit").perform(command.js.click)
 
     def should_registered_user_with(
         self,
@@ -140,20 +155,24 @@ class RegistrationPage:
         address,
         state_and_city,
     ):
-        browser.element(".table").all("td").even.should(
-            have.texts(
-                full_name,
-                email,
-                gender,
-                mobile,
-                date_of_birth,
-                subjects,
-                hobbies,
-                picture,
-                address,
-                state_and_city,
+        with allure.step(
+            f"Checking that entered user data displayed correctly in the summary table"
+        ):
+            browser.element(".table").all("td").even.should(
+                have.texts(
+                    full_name,
+                    email,
+                    gender,
+                    mobile,
+                    date_of_birth,
+                    subjects,
+                    hobbies,
+                    picture,
+                    address,
+                    state_and_city,
+                )
             )
-        )
 
     def should_confirmation_popup_title(self, title):
-        self.confirmation_popup_title_element.should(have.exact_text(title))
+        with allure.step("Checking title of popup"):
+            self.confirmation_popup_title_element.should(have.exact_text(title))
