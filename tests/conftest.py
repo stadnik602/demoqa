@@ -1,42 +1,34 @@
+# conftest.py
 import pytest
-from selene import browser
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.chrome.options import Options
+from selene.support.shared import browser
 from webdriver_manager.chrome import ChromeDriverManager
-
-from demoqa.pages.application import Application
-
 
 BASE_URL = "https://demoqa.com"
 
-
-@pytest.fixture(scope="function", autouse=True)
+@pytest.fixture(scope="session", autouse=True)
 def setup_browser():
-    options = webdriver.ChromeOptions()
-    # options.add_argument("--headless=new")            # headless режим
-    options.add_argument("--no-sandbox")              # для CI
-    options.add_argument("--disable-dev-shm-usage")   # для CI
-    options.add_argument("--disable-gpu")             # иногда нужно
-    options.add_argument("--window-size=1920,1080")   # для правильного рендера
+    # Настройки Chrome
+    options = Options()
+    options.add_argument("--headless=new")  # headless для новых версий Chrome
+    options.add_argument("--disable-gpu")
+    options.add_argument("--no-sandbox")
+    options.add_argument("--disable-dev-shm-usage")
+    options.add_argument("--window-size=1920,1080")
 
-    driver = webdriver.Chrome(
-        service=Service(ChromeDriverManager().install(), log_path="chromedriver.log"),
-        options=options
-    )
+    # Инициализация ChromeDriver
+    service = Service(ChromeDriverManager().install())
+    driver = webdriver.Chrome(service=service, options=options)
 
+    # Настройка Selene
     browser.config.driver = driver
     browser.config.base_url = BASE_URL
-    browser.config.headless = True
-    browser.config.timeout = 6
 
-    yield
+    yield browser
 
     driver.quit()
-
-
-@pytest.fixture
-def app():
-    return Application()
 
 
 # @pytest.fixture(autouse=True)
