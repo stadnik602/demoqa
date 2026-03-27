@@ -16,3 +16,9 @@ jobs:
       - run: pip install -r requirements.txt
 
       - run: pytest --alluredir=allure-results
+
+      - name: Install Chrome
+        run: sudo apt-get install google-chrome-stable -y
+
+      - name: Install dependencies
+        run: pip install selenium selene webdriver-manager
