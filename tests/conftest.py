@@ -14,7 +14,7 @@ def browser_setup():
     browser.driver.maximize_window()
     # browser.config.window_width = '1920'
     # browser.config.window_height = '1080'
-    browser.config.headless = False
+    browser.config.headless = True
     browser.config.browser_name = "chrome"
     browser.config.timeout = 6
 
