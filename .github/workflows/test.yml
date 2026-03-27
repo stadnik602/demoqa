@@ -33,19 +33,19 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y google-chrome-stable
 
-      # 5️⃣ Запуск тестов с Allure
-      - name: Run pytest
-        run: |
-          mkdir -p steps/allure-results
-          pytest --alluredir=steps/allure-results
-
-      # 6️⃣ Скачивание Allure для генерации отчета
+      #  Скачивание Allure для генерации отчета
       - name: Install Allure
         run: |
           sudo apt-add-repository ppa:qameta/allure -y
           sudo apt-get update
           sudo apt-get install -y allure
 
+      # Запуск тестов с Allure
+      - name: Run pytest
+        run: |
+          mkdir -p steps/allure-results
+          pytest --alluredir=steps/allure-results
+          
       # 7️⃣ Генерация и публикация отчета Allure
       - name: Generate Allure report
         run: |
