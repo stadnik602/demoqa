@@ -1,0 +1,3 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","0","test_successes_submit_form_by_page_object_steps","tests","Sat Mar 28 04:12:09 UTC 2026","broken","Sat Mar 28 04:12:09 UTC 2026","","practice_form_test","",""
+"","0","test_registers_user","tests","Sat Mar 28 04:12:14 UTC 2026","broken","Sat Mar 28 04:12:14 UTC 2026","","test_simple_user_registration","",""

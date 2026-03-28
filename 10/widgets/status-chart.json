@@ -1,0 +1,1 @@
+[{"uid":"b35d3427bad8b9a7","name":"test_successes_submit_form_by_page_object_steps","time":{"start":1774671129754,"stop":1774671129754,"duration":0},"status":"broken","severity":"blocker"},{"uid":"53049d3ff03270f8","name":"test_registers_user","time":{"start":1774671134199,"stop":1774671134199,"duration":0},"status":"broken","severity":"critical"}]
